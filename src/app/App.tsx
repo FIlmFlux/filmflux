@@ -1,13 +1,12 @@
-import { Button } from "@/components/ui/button";
 import Navbar from "@/components/ui/Navbar";
+import HeroSection from "@/pages/Home/HeroSection";
 
 const App = () => {
   return (
     <div>
         <Navbar />
-      <div className="flex min-h-svh flex-col items-center justify-center">
-        <Button variant="hex1" size="lg" className="rounded-full">Search</Button>
-      </div>
+        <HeroSection />
+     
    
     </div>
   );
