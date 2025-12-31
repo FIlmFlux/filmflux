@@ -8,7 +8,6 @@ const Navbar = () => {
         Film<span className="text-green-400">Flex</span>
       </div>
 
-      {/* Spacer */}
       <div className="flex-1" />
 
       {/* Nav Links + Avatar */}

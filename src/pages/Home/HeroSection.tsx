@@ -4,7 +4,7 @@ import { MovieCard } from "@/components/ui/MovieCard"
 
 type Movie = {
   title: string
-  poster: string
+  poster: string 
   releaseDate: string
 }
 
@@ -42,7 +42,8 @@ function HeroSection() {
   }, [])
 
   return (
-    <div className="p-6 grid grid-cols-2 gap-4">
+  <div className="bg-linear-to-b from-black/70 to-black py-5"> 
+    <div className="p-6 grid grid-cols-4 gap-4 ">
       {movies.map((movie) => (
         <MovieCard
           key={movie.title}
@@ -52,6 +53,7 @@ function HeroSection() {
         />
       ))}
     </div>
+  </div>
   )
 }
 
