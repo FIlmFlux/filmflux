@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 
 type MovieCardProps = {
   image?: string;
@@ -7,33 +7,42 @@ type MovieCardProps = {
 };
 
 export function MovieCard({ image, title, date }: MovieCardProps) {
+  // Adjust title size to prevent overflow
+  const getTitleSize = (title: string) => {
+    if (title.length < 15) return "text-base";
+    if (title.length < 25) return "text-sm";
+    return "text-xs";
+  };
+
   return (
-    <Card className="w-64 overflow-hidden text-white bg-neutral-900 shadow-lg border-green-900">
-      {/* Image or placeholder */}
+    <Card className="group w-full h-full overflow-hidden bg-neutral-900 border border-neutral-800 hover:border-green-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-green-500/10 hover:scale-110 hover:z-10 rounded-lg p-0">
+      {/* Image container with hover feedback */}
       {image ? (
-        <div className="relative w-full h-48 bg-black overflow-hidden">
+        <div className="relative w-full aspect-2/3 bg-black overflow-hidden">
           <img
             src={image}
-            className="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-40"
+            alt={title}
+            className="relative z-10 w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
           />
-          <img
-            src={image}
-            className="relative z-10 w-full h-full object-contain"
-          />
+          {/* Green overlay on hover */}
+          <div className="absolute inset-0 bg-linear-to-t from-green-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" />
         </div>
       ) : (
-        <div className="w-full h-48 bg-neutral-800 flex items-center justify-center text-sm text-neutral-400">
+        // Fallback UI when poster is missing
+        <div className="w-full aspect-2/3 bg-neutral-800 flex items-center justify-center text-sm text-neutral-500">
           No Poster
         </div>
       )}
 
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base">{title}</CardTitle>
-      </CardHeader>
-
-      <CardContent>
-        <p className="text-sm text-muted-foreground">{date || "unknown"}</p>
-      </CardContent>
+      {/* Title and Date */}
+      <div className="px-3 ">
+        <h3
+          className={`font-semibold text-white line-clamp-2 leading-tight group-hover:text-green-400 transition-colors ${getTitleSize(title)}`}
+        >
+          {title}
+        </h3>
+        <p className="text-xs text-neutral-500 mt-0.5">{date || "Unknown"}</p>
+      </div>
     </Card>
   );
 }
