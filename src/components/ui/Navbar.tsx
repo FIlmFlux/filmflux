@@ -4,11 +4,11 @@ import { Search } from "lucide-react";
 import { Home, Library, Star } from "lucide-react";
 
 type NavItemProps = {
-  icon: React.ElementType
-  label: string
-  href: string
-  active?: boolean
-}
+  icon: React.ElementType;
+  label: string;
+  href: string;
+  active?: boolean;
+};
 
 type NavbarProps = {
   searchQuery: string;
@@ -49,10 +49,10 @@ const NavItem = ({ icon: Icon, label, href, active }: NavItemProps) => {
   );
 };
 
-const Navbar = ({searchQuery,setSearchQuery}: NavbarProps) => {
+const Navbar = ({ searchQuery, setSearchQuery }: NavbarProps) => {
   return (
     <div className="sticky top-0 z-20 flex h-16 items-center bg-black/90 px-8 shadow-md">
-      {/* Site Logo */} 
+      {/* Site Logo */}
       <div className="flex items-center">
         <h1 className="text-3xl font-bold tracking-tighter">
           <span className="text-emerald-300 drop-shadow-lg">Film</span>
@@ -77,8 +77,8 @@ const Navbar = ({searchQuery,setSearchQuery}: NavbarProps) => {
           focus-visible:ring-0
           focus-visible:border-green-600
           transition-all duration-300"
-          value={searchQuery}        
-          onChange={(e) => setSearchQuery(e.target.value)} 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search movies..."
         />
         <Search

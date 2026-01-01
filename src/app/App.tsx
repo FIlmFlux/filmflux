@@ -3,7 +3,7 @@ import HeroSection from "@/pages/Home/HeroSection";
 import { useState } from "react";
 
 const App = () => {
-const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   return (
     <div>
       <Navbar setSearchQuery={setSearchQuery} searchQuery={searchQuery} />
