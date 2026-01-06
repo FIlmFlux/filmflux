@@ -7,7 +7,7 @@ const App = () => {
   return (
     <div>
       <Navbar setSearchQuery={setSearchQuery} searchQuery={searchQuery} />
-      <HeroSection query={searchQuery} />
+      <HeroSection query={searchQuery.trim()} />
     </div>
   );
 };

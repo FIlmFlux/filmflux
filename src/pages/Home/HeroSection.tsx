@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { MovieCard } from "@/components/MovieCard";
 
 type Movie = {
@@ -16,40 +16,36 @@ const TMDB_API = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
 
+async function fetchMovies(query: string): Promise<Movie[]> {
+  const url = query
+    ? `${BASE_URL}/search/movie?api_key=${TMDB_API}&query=${query}`
+    : `${BASE_URL}/movie/popular?api_key=${TMDB_API}`;
+  
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Failed to fetch movies");
+    
+    const data = await res.json();
+
+  return data.results.slice(0, 14).map((movie: any) => ({
+    id: movie.id,
+    title: movie.title,
+    poster: movie.poster_path
+      ? `${IMAGE_BASE}${movie.poster_path}`
+      : "",
+    releaseDate: movie.release_date,
+  }));
+}
+
 const HeroSection = ({ query }: HeroSectionProps) => {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function loadPopularMovies() {
-      setLoading(true);
-      try {
-        const url = query
-          ? `${BASE_URL}/search/movie?api_key=${TMDB_API}&query=${query}`
-          : `${BASE_URL}/movie/popular?api_key=${TMDB_API}`;
-
-        const res = await fetch(url);
-        const data = await res.json();
-
-        setMovies(
-          data.results.slice(0, 14).map((movie: any) => ({
-            id: movie.id,
-            title: movie.title,
-            poster: movie.poster_path
-              ? `${IMAGE_BASE}${movie.poster_path}`
-              : "",
-            releaseDate: movie.release_date,
-          })),
-        );
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadPopularMovies();
-  }, [query]);
+  const {
+    data: movies = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["movies", query],
+    queryFn: () => fetchMovies(query),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
 
   return (
     <section className="relative min-h-screen bg-black overflow-hidden">
@@ -86,7 +82,7 @@ const HeroSection = ({ query }: HeroSectionProps) => {
 
         {/* Movie Grid */}
         <div className="max-w-7xl mx-auto">
-          {loading ? (
+          {isLoading ? (
             <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-6">
               {[...Array(14)].map((_, i) => (
                 <div
@@ -96,6 +92,8 @@ const HeroSection = ({ query }: HeroSectionProps) => {
                 />
               ))}
             </div>
+          ) : isError ? (
+            <p className="text-red-400">Failed to load movies.</p>
           ) : (
             <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-6">
               {movies.map((movie) => (
