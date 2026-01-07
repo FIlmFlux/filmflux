@@ -1,7 +1,13 @@
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/pages/Home/HeroSection";
+import { useState } from "react";
+
 const App = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   return (
     <div>
-      <h1>FilmFlux</h1>
+      <Navbar setSearchQuery={setSearchQuery} searchQuery={searchQuery} />
+      <HeroSection query={searchQuery.trim()} />
     </div>
   );
 };
